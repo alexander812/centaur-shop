@@ -18,11 +18,11 @@ function App() {
               <Image
                 src={`http://localhost:8055/assets/${good.main_image}`}
                 height={200}
-                alt={String(good.name ?? '')}
+                alt={String(good.title ?? '')}
               />
             </Card.Section>
-            <Text fw={500} mt="md">{String(good.name ?? '')}</Text>
-            <Text size="xl" fw={700} c="blue">{String(good.price ?? '')} ₽</Text>
+            <Text fw={500} mt="md">{String(good.title ?? '')}</Text>
+            <Text size="xl" fw={700} c="blue">{String(good.price_rub ?? '')} ₽</Text>
           </Card>
         ))}
       </SimpleGrid>

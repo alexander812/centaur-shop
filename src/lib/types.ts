@@ -1,11 +1,7 @@
-export interface Good {
-  id: number
-  name: string
-  price: number
-  main_image: string
-}
+import type { components } from './directus-types'
 
-// Добавляй сюда другие коллекции по мере необходимости
+export type Good = components['schemas']['ItemsGoods']
+
 export interface Schema {
   goods: Good[]
 }

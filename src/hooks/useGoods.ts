@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { readItems } from '@directus/sdk';
 import client from '../lib/directus';
-
-interface Good {
-  id: number;
-  [key: string]: unknown;
-}
+import type { Good } from '../lib/types';
 
 export function useGoods() {
   const [goods, setGoods] = useState<Good[]>([]);
