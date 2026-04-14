@@ -10,7 +10,7 @@ export function useGoods() {
 
   useEffect(() => {
     client
-      .request(readItems('goods'))
+      .request(readItems('goods', { filter: { status: { _eq: 'published' } } }))
       .then((data) => setGoods(data as Good[]))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

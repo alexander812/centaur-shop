@@ -3,7 +3,6 @@ import { useGoods } from './hooks/useGoods'
 
 function App() {
   const { goods, loading, error } = useGoods();
-  console.log(['goods', goods]);
 
   if (loading) return <Text p="xl">Загрузка...</Text>
   if (error) return <Text p="xl" c="red">Ошибка: {error}</Text>
