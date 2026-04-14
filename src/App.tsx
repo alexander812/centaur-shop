@@ -1,29 +1,32 @@
+import { Container, Title, SimpleGrid, Card, Image, Text } from '@mantine/core'
 import { useGoods } from './hooks/useGoods'
 
 function App() {
-  const { goods, loading, error } = useGoods()
+  const { goods, loading, error } = useGoods();
+  console.log(['goods', goods]);
 
-  if (loading) return <p>Загрузка...</p>
-  if (error) return <p>Ошибка: {error}</p>
+  if (loading) return <Text p="xl">Загрузка...</Text>
+  if (error) return <Text p="xl" c="red">Ошибка: {error}</Text>
 
   return (
-    <div>
-      <h1>Товары</h1>
-      <ul>
+    <Container py="xl">
+      <Title mb="xl">Товары</Title>
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="md">
         {goods.map((good) => (
-          <li key={good.id}>
-            {good.main_image && (
-              <img
+          <Card key={good.id} shadow="sm" radius="md" withBorder>
+            <Card.Section>
+              <Image
                 src={`http://localhost:8055/assets/${good.main_image}`}
+                height={200}
                 alt={String(good.name ?? '')}
-                width={200}
               />
-            )}
-            {JSON.stringify(good)}
-          </li>
+            </Card.Section>
+            <Text fw={500} mt="md">{String(good.name ?? '')}</Text>
+            <Text size="xl" fw={700} c="blue">{String(good.price ?? '')} ₽</Text>
+          </Card>
         ))}
-      </ul>
-    </div>
+      </SimpleGrid>
+    </Container>
   )
 }
 
