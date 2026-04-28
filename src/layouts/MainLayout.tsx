@@ -13,6 +13,10 @@ export function MainLayout({ children }: { children: ReactNode }) {
     navigate('/login')
   }
 
+  async function handleLogin() {
+    navigate('/login')
+  }
+
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
@@ -30,14 +34,18 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 Заказы
               </Button>
             </Group>
-            {user && (
+            {user ? (
               <Group>
                 <Text size="sm" c="dimmed">{user.email}</Text>
                 <Button variant="subtle" size="sm" onClick={handleLogout}>
                   Выйти
                 </Button>
               </Group>
-            )}
+            ) : <Group>
+              <Button variant="subtle" size="sm" onClick={handleLogin}>
+                Войти
+              </Button>
+            </Group>}
           </Group>
         </Container>
       </AppShell.Header>
