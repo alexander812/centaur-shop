@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useUnit } from 'effector-react'
 import { Container, Paper, Title, TextInput, PasswordInput, Button, Stack, Text, Divider, Anchor } from '@mantine/core'
 import { loginFx, registerFx, $loginPending, $registerPending, $authError, resetAuthError } from '../store'
 
 export function LoginForm() {
+  const navigate = useNavigate()
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -14,12 +16,13 @@ export function LoginForm() {
   const authError = useUnit($authError)
   const pending = loginPending || registerPending
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (mode === 'login') {
-      loginFx({ email, password })
+      await loginFx({ email, password })
+      navigate('/')
     } else {
-      registerFx({ email, password, firstName })
+      await registerFx({ email, password, firstName })
     }
   }
 

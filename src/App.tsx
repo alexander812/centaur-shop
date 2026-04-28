@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useUnit } from 'effector-react'
-import { Button, Group } from '@mantine/core'
 import { $user, $authLoading, checkAuthFx } from './features/auth/store'
 import { MainLayout } from './layouts/MainLayout'
 import { AuthPage } from './pages/AuthPage'
@@ -8,40 +8,38 @@ import { GoodsPage } from './pages/GoodsPage'
 import { BasketPage } from './pages/BasketPage'
 import { OrderPage } from './pages/OrderPage'
 
-type Page = 'goods' | 'basket' | 'orders'
+function PrivateRoute({ children }: { children: React.ReactNode }) {
+  const user = useUnit($user)
+  if (!user) return <Navigate to="/login" replace />
+  return <>{children}</>
+}
 
-function App() {
+function AppRoutes() {
   const user = useUnit($user)
   const authLoading = useUnit($authLoading)
-  const [page, setPage] = useState<Page>('goods')
 
   useEffect(() => {
     checkAuthFx()
   }, [])
 
   if (authLoading) return null
-  if (!user) return <AuthPage />
-
-  const nav = (
-    <Group gap="xs">
-      <Button variant={page === 'goods' ? 'filled' : 'subtle'} size="sm" onClick={() => setPage('goods')}>
-        Товары
-      </Button>
-      <Button variant={page === 'basket' ? 'filled' : 'subtle'} size="sm" onClick={() => setPage('basket')}>
-        Корзина
-      </Button>
-      <Button variant={page === 'orders' ? 'filled' : 'subtle'} size="sm" onClick={() => setPage('orders')}>
-        Заказы
-      </Button>
-    </Group>
-  )
 
   return (
-    <MainLayout nav={nav}>
-      {page === 'goods' && <GoodsPage />}
-      {page === 'basket' && <BasketPage />}
-      {page === 'orders' && <OrderPage />}
-    </MainLayout>
+    <Routes>
+      <Route path="/login" element={user ? <Navigate to="/" replace /> : <AuthPage />} />
+      <Route path="/" element={<MainLayout><GoodsPage /></MainLayout>} />
+      <Route path="/basket" element={<PrivateRoute><MainLayout><BasketPage /></MainLayout></PrivateRoute>} />
+      <Route path="/orders" element={<PrivateRoute><MainLayout><OrderPage /></MainLayout></PrivateRoute>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }
 
