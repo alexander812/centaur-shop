@@ -1,43 +1,47 @@
-import { Container, Title, SimpleGrid, Card, Image, Text, Button, Group } from '@mantine/core'
-import { useGoods } from './hooks/useGoods'
-import { useAuth } from './context/AuthContext'
-import { LoginPage } from './pages/LoginPage'
+import { useEffect, useState } from 'react'
+import { useUnit } from 'effector-react'
+import { Button, Group } from '@mantine/core'
+import { $user, $authLoading, checkAuthFx } from './features/auth/store'
+import { MainLayout } from './layouts/MainLayout'
+import { AuthPage } from './pages/AuthPage'
+import { GoodsPage } from './pages/GoodsPage'
+import { BasketPage } from './pages/BasketPage'
+import { OrderPage } from './pages/OrderPage'
+
+type Page = 'goods' | 'basket' | 'orders'
 
 function App() {
-  const { user, loading: authLoading, logout } = useAuth()
-  const { goods, loading, error } = useGoods()
+  const user = useUnit($user)
+  const authLoading = useUnit($authLoading)
+  const [page, setPage] = useState<Page>('goods')
 
-  if (authLoading) return <Text p="xl">Загрузка...</Text>
-  if (!user) return <LoginPage onLogin={() => {}} />
+  useEffect(() => {
+    checkAuthFx()
+  }, [])
 
-  if (loading) return <Text p="xl">Загрузка товаров...</Text>
-  if (error) return <Text p="xl" c="red">Ошибка: {error}</Text>
+  if (authLoading) return null
+  if (!user) return <AuthPage />
+
+  const nav = (
+    <Group gap="xs">
+      <Button variant={page === 'goods' ? 'filled' : 'subtle'} size="sm" onClick={() => setPage('goods')}>
+        Товары
+      </Button>
+      <Button variant={page === 'basket' ? 'filled' : 'subtle'} size="sm" onClick={() => setPage('basket')}>
+        Корзина
+      </Button>
+      <Button variant={page === 'orders' ? 'filled' : 'subtle'} size="sm" onClick={() => setPage('orders')}>
+        Заказы
+      </Button>
+    </Group>
+  )
 
   return (
-    <Container py="xl">
-      <Group justify="space-between" mb="xl">
-        <Title>Товары</Title>
-        <Group>
-          <Text size="sm" c="dimmed">{user.email}</Text>
-          <Button variant="subtle" size="sm" onClick={logout}>Выйти</Button>
-        </Group>
-      </Group>
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="md">
-        {goods.map((good) => (
-          <Card key={good.id} shadow="sm" radius="md" withBorder>
-            <Card.Section>
-              <Image
-                src={`http://localhost:8055/assets/${good.main_image}`}
-                height={200}
-                alt={String(good.title ?? '')}
-              />
-            </Card.Section>
-            <Text fw={500} mt="md">{String(good.title ?? '')}</Text>
-            <Text size="xl" fw={700} c="blue">{String(good.price_rub ?? '')} ₽</Text>
-          </Card>
-        ))}
-      </SimpleGrid>
-    </Container>
+    <MainLayout nav={nav}>
+      {page === 'goods' && <GoodsPage />}
+      {page === 'basket' && <BasketPage />}
+      {page === 'orders' && <OrderPage />}
+    </MainLayout>
   )
 }
 
