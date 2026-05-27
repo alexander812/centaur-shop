@@ -3,6 +3,7 @@ import { useUnit } from 'effector-react'
 import { SimpleGrid, Card, Image, Text, Button } from '@mantine/core'
 import { $goods, $goodsLoading, $goodsError, fetchGoodsFx } from '../store'
 import { addToBasketFx } from '../../basket/store'
+import { UserGuard } from '../../auth/ui/UserGuard'
 
 export function GoodsList() {
   const goods = useUnit($goods)
@@ -29,14 +30,16 @@ export function GoodsList() {
           </Card.Section>
           <Text fw={500} mt="md">{String(good.title ?? '')}</Text>
           <Text size="xl" fw={700} c="blue">{String(good.price_rub ?? '')} &#8381;</Text>
-          <Button
-            mt="sm"
-            fullWidth
-            variant="light"
-            onClick={() => addToBasketFx({ goodId: Number(good.id), quantity: 1 })}
-          >
-            В корзину
-          </Button>
+          <UserGuard>
+            <Button
+              mt="sm"
+              fullWidth
+              variant="light"
+              onClick={() => addToBasketFx({ goodId: Number(good.id), quantity: 1 })}
+            >
+              В корзину
+            </Button>
+          </UserGuard>
         </Card>
       ))}
     </SimpleGrid>
