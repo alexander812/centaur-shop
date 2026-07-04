@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUnit } from 'effector-react'
 import { Container, Paper, Title, TextInput, PasswordInput, Button, Stack, Text, Divider, Anchor } from '@mantine/core'
+import { DIRECTUS_URL } from '../../../lib/directus'
 import { loginFx, registerFx, $loginPending, $registerPending, $authError, resetAuthError } from '../store'
 
 export function LoginForm() {
@@ -89,7 +90,7 @@ export function LoginForm() {
             variant="outline"
             color="blue"
             onClick={() => {
-              window.location.href = 'http://localhost:8055/auth/oauth/vk?redirect=http://localhost:5173'
+              window.location.href = `${DIRECTUS_URL}/auth/oauth/vk?redirect=${window.location.origin}`
             }}
           >
             Войти через ВКонтакте

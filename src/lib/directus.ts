@@ -1,7 +1,9 @@
 import { createDirectus, rest, authentication } from '@directus/sdk';
 import type { Schema } from './types';
 
-const client = createDirectus<Schema>('http://localhost:8055')
+export const DIRECTUS_URL = import.meta.env.VITE_DIRECTUS_URL ?? 'http://localhost:8055'
+
+const client = createDirectus<Schema>(DIRECTUS_URL)
   .with(authentication('json', {
     storage: {
       get: () => {

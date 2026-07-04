@@ -14,6 +14,7 @@ export function BasketList() {
   if (loading) return <Text p="xl">Загрузка корзины...</Text>
   if (basket.length === 0) return <Text p="xl" c="dimmed">Корзина пуста</Text>
 
+  console.log(['basket', basket]);
   return (
     <Stack>
       {basket.map((item) => {

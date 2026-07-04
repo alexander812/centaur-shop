@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useUnit } from 'effector-react'
 import { SimpleGrid, Card, Image, Text, Button } from '@mantine/core'
+import { DIRECTUS_URL } from '../../../lib/directus'
 import { $goods, $goodsLoading, $goodsError, fetchGoodsFx } from '../store'
 import { addToBasketFx } from '../../basket/store'
 import { UserGuard } from '../../auth/ui/UserGuard'
@@ -23,7 +24,7 @@ export function GoodsList() {
         <Card key={good.id} shadow="sm" radius="md" withBorder>
           <Card.Section>
             <Image
-              src={`http://localhost:8055/assets/${good.main_image}`}
+              src={`${DIRECTUS_URL}/assets/${good.main_image}`}
               height={200}
               alt={String(good.title ?? '')}
             />

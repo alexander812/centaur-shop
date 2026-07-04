@@ -7,7 +7,6 @@ export type { Order }
 export async function fetchOrders(): Promise<Order[]> {
   const data = await client.request(
     readItems('order' as 'goods', {
-      filter: { user_created: { _eq: '$CURRENT_USER' } } as never,
       sort: ['-date_created'] as never,
     })
   )
