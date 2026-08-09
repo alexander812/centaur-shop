@@ -8,6 +8,8 @@ export function MainLayout({ children }: { children: ReactNode }) {
   const user = useUnit($user)
   const navigate = useNavigate()
 
+  console.log(['user', user])
+
   async function handleLogout() {
     await logoutFx()
     navigate('/login')
@@ -23,7 +25,9 @@ export function MainLayout({ children }: { children: ReactNode }) {
         <Container size="xl" h="100%">
           <Group justify="space-between" h="100%">
             <Group>
-              <Text fw={700} size="lg">Centaur</Text>
+              <Text fw={700} size="lg">
+                Centaur
+              </Text>
               <Button component={NavLink} to="/" variant="subtle" size="sm">
                 Товары
               </Button>
@@ -36,16 +40,20 @@ export function MainLayout({ children }: { children: ReactNode }) {
             </Group>
             {user ? (
               <Group>
-                <Text size="sm" c="dimmed">{user.email}</Text>
+                <Text size="sm" c="dimmed">
+                  {user.email}
+                </Text>
                 <Button variant="subtle" size="sm" onClick={handleLogout}>
                   Выйти
                 </Button>
               </Group>
-            ) : <Group>
-              <Button variant="subtle" size="sm" onClick={handleLogin}>
-                Войти
-              </Button>
-            </Group>}
+            ) : (
+              <Group>
+                <Button variant="subtle" size="sm" onClick={handleLogin}>
+                  Войти
+                </Button>
+              </Group>
+            )}
           </Group>
         </Container>
       </AppShell.Header>

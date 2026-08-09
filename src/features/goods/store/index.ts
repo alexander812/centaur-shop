@@ -8,8 +8,7 @@ export const fetchGoodsFx = createEffect(() => goodsApi.fetchGoods())
 
 // --- Stores ---
 
-export const $goods = createStore<Good[]>([])
-  .on(fetchGoodsFx.doneData, (_, goods) => goods)
+export const $goods = createStore<Good[]>([]).on(fetchGoodsFx.doneData, (_, goods) => goods)
 
 export const $goodsLoading = createStore(false)
   .on(fetchGoodsFx, () => true)

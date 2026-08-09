@@ -27,9 +27,34 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <AuthPage />} />
-      <Route path="/" element={<MainLayout><GoodsPage /></MainLayout>} />
-      <Route path="/basket" element={<PrivateRoute><MainLayout><BasketPage /></MainLayout></PrivateRoute>} />
-      <Route path="/orders" element={<PrivateRoute><MainLayout><OrderPage /></MainLayout></PrivateRoute>} />
+      <Route
+        path="/"
+        element={
+          <MainLayout>
+            <GoodsPage />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/basket"
+        element={
+          <PrivateRoute>
+            <MainLayout>
+              <BasketPage />
+            </MainLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/orders"
+        element={
+          <PrivateRoute>
+            <MainLayout>
+              <OrderPage />
+            </MainLayout>
+          </PrivateRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

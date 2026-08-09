@@ -14,8 +14,6 @@ export async function fetchOrders(): Promise<Order[]> {
 }
 
 export async function createOrder(): Promise<Order> {
-  const item = await client.request(
-    createItem('order' as 'goods', { status: 'new' } as never)
-  )
+  const item = await client.request(createItem('order' as 'goods', { status: 'new' } as never))
   return item as unknown as Order
 }

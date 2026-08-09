@@ -4,9 +4,8 @@ import type { UserPayload } from '../../../transport/auth'
 
 // --- Effects ---
 
-export const loginFx = createEffect(
-  ({ email, password }: { email: string; password: string }) =>
-    authApi.login(email, password)
+export const loginFx = createEffect(({ email, password }: { email: string; password: string }) =>
+  authApi.login(email, password)
 )
 
 export const registerFx = createEffect(
@@ -29,8 +28,7 @@ export const $user = createStore<UserPayload | null>(null)
   .on(checkAuthFx.doneData, (_, user) => user)
   .reset(logoutFx.done)
 
-export const $authLoading = createStore(true)
-  .on(checkAuthFx.finally, () => false)
+export const $authLoading = createStore(true).on(checkAuthFx.finally, () => false)
 
 export const $loginPending = createStore(false)
   .on(loginFx, () => true)

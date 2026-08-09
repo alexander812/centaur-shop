@@ -16,7 +16,12 @@ export function GoodsList() {
   }, [])
 
   if (loading) return <Text p="xl">Загрузка товаров...</Text>
-  if (error) return <Text p="xl" c="red">Ошибка: {error}</Text>
+  if (error)
+    return (
+      <Text p="xl" c="red">
+        Ошибка: {error}
+      </Text>
+    )
 
   return (
     <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="md">
@@ -29,8 +34,12 @@ export function GoodsList() {
               alt={String(good.title ?? '')}
             />
           </Card.Section>
-          <Text fw={500} mt="md">{String(good.title ?? '')}</Text>
-          <Text size="xl" fw={700} c="blue">{String(good.price_rub ?? '')} &#8381;</Text>
+          <Text fw={500} mt="md">
+            {String(good.title ?? '')}
+          </Text>
+          <Text size="xl" fw={700} c="blue">
+            {String(good.price_rub ?? '')} &#8381;
+          </Text>
           <UserGuard>
             <Button
               mt="sm"

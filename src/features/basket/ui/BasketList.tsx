@@ -1,7 +1,13 @@
 import { useEffect } from 'react'
 import { useUnit } from 'effector-react'
 import { Stack, Group, Text, Button, Card, NumberInput } from '@mantine/core'
-import { $basket, $basketLoading, fetchBasketFx, updateBasketItemFx, removeFromBasketFx } from '../store'
+import {
+  $basket,
+  $basketLoading,
+  fetchBasketFx,
+  updateBasketItemFx,
+  removeFromBasketFx,
+} from '../store'
 
 export function BasketList() {
   const basket = useUnit($basket)
@@ -12,14 +18,22 @@ export function BasketList() {
   }, [])
 
   if (loading) return <Text p="xl">Загрузка корзины...</Text>
-  if (basket.length === 0) return <Text p="xl" c="dimmed">Корзина пуста</Text>
+  if (basket.length === 0)
+    return (
+      <Text p="xl" c="dimmed">
+        Корзина пуста
+      </Text>
+    )
 
-  console.log(['basket', basket]);
+  console.log(['basket', basket])
+
   return (
     <Stack>
       {basket.map((item) => {
         const good = typeof item.good_id === 'object' ? item.good_id : null
-        const title = good ? String((good as Record<string, unknown>).title ?? '') : `Товар #${item.good_id}`
+        const title = good
+          ? String((good as Record<string, unknown>).title ?? '')
+          : `Товар #${item.good_id}`
         const price = good ? Number((good as Record<string, unknown>).price_rub ?? 0) : 0
 
         return (
@@ -27,7 +41,9 @@ export function BasketList() {
             <Group justify="space-between">
               <div>
                 <Text fw={500}>{title}</Text>
-                <Text size="sm" c="dimmed">{price} &#8381; за шт.</Text>
+                <Text size="sm" c="dimmed">
+                  {price} &#8381; за шт.
+                </Text>
               </div>
               <Group>
                 <NumberInput
@@ -54,6 +70,17 @@ export function BasketList() {
           </Card>
         )
       })}
+
+      <Button
+        variant="subtle"
+        color="red"
+        size="sm"
+        onClick={() => {
+          //
+        }}
+      >
+        Оформить заказ
+      </Button>
     </Stack>
   )
 }

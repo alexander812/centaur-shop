@@ -10,6 +10,7 @@ export interface UserPayload {
 
 export async function login(email: string, password: string): Promise<UserPayload> {
   await client.login({ email, password })
+
   const me = await client.request(readMe())
   return me as UserPayload
 }
@@ -26,6 +27,10 @@ export async function logout(): Promise<void> {
 export async function getMe(): Promise<UserPayload | null> {
   const auth = localStorage.getItem('auth')
   if (!auth) return null
-  const me = await client.request(readMe())
+  const me = await client.request(
+    readMe({
+      fields: ['id', 'email', 'first_name', 'last_name'],
+    })
+  )
   return me as UserPayload
 }

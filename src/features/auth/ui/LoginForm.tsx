@@ -1,9 +1,27 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUnit } from 'effector-react'
-import { Container, Paper, Title, TextInput, PasswordInput, Button, Stack, Text, Divider, Anchor } from '@mantine/core'
+import {
+  Container,
+  Paper,
+  Title,
+  TextInput,
+  PasswordInput,
+  Button,
+  Stack,
+  Text,
+  Divider,
+  Anchor,
+} from '@mantine/core'
 import { DIRECTUS_URL } from '../../../lib/directus'
-import { loginFx, registerFx, $loginPending, $registerPending, $authError, resetAuthError } from '../store'
+import {
+  loginFx,
+  registerFx,
+  $loginPending,
+  $registerPending,
+  $authError,
+  resetAuthError,
+} from '../store'
 
 export function LoginForm() {
   const navigate = useNavigate()
@@ -64,7 +82,11 @@ export function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              {authError && <Text c="red" size="sm">{authError}</Text>}
+              {authError && (
+                <Text c="red" size="sm">
+                  {authError}
+                </Text>
+              )}
               <Button type="submit" loading={pending} fullWidth>
                 {mode === 'login' ? 'Войти' : 'Зарегистрироваться'}
               </Button>
@@ -73,12 +95,13 @@ export function LoginForm() {
 
           <Text ta="center" size="sm">
             {mode === 'login' ? (
-              <>Нет аккаунта?{' '}
+              <>
+                Нет аккаунта?{' '}
                 <Anchor onClick={() => switchMode('register')}>Зарегистрироваться</Anchor>
               </>
             ) : (
-              <>Уже есть аккаунт?{' '}
-                <Anchor onClick={() => switchMode('login')}>Войти</Anchor>
+              <>
+                Уже есть аккаунт? <Anchor onClick={() => switchMode('login')}>Войти</Anchor>
               </>
             )}
           </Text>

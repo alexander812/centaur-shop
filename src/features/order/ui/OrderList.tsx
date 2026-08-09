@@ -19,7 +19,12 @@ export function OrderList() {
   }, [])
 
   if (loading) return <Text p="xl">Загрузка заказов...</Text>
-  if (orders.length === 0) return <Text p="xl" c="dimmed">Заказов пока нет</Text>
+  if (orders.length === 0)
+    return (
+      <Text p="xl" c="dimmed">
+        Заказов пока нет
+      </Text>
+    )
 
   return (
     <Stack>

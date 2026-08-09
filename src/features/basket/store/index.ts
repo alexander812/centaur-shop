@@ -9,17 +9,14 @@ export const fetchBasketFx = createEffect(() => basketApi.fetchBasket())
 
 export const addToBasketFx = createEffect(
   ({ goodId, quantity }: { goodId: number; quantity?: number }) =>
-    basketApi.addToBasket(goodId, quantity)
+    basketApi.addToBasket2(goodId, quantity)
 )
 
 export const updateBasketItemFx = createEffect(
-  ({ id, quantity }: { id: number; quantity: number }) =>
-    basketApi.updateBasketItem(id, quantity)
+  ({ id, quantity }: { id: number; quantity: number }) => basketApi.updateBasketItem(id, quantity)
 )
 
-export const removeFromBasketFx = createEffect(
-  (id: number) => basketApi.removeFromBasket(id)
-)
+export const removeFromBasketFx = createEffect((id: number) => basketApi.removeFromBasket(id))
 
 // --- Stores ---
 
