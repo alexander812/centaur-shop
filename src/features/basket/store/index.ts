@@ -8,8 +8,9 @@ import { logoutFx } from '../../auth/store'
 export const fetchBasketFx = createEffect(() => basketApi.fetchBasket())
 
 export const addToBasketFx = createEffect(
-  ({ goodId, quantity }: { goodId: number; quantity?: number }) =>
-    basketApi.addToBasket2(goodId, quantity)
+  ({ goodId, quantity }: { goodId: number; quantity?: number }) => {
+    return basketApi.addToBasket(goodId, quantity)
+  }
 )
 
 export const updateBasketItemFx = createEffect(
@@ -17,6 +18,11 @@ export const updateBasketItemFx = createEffect(
 )
 
 export const removeFromBasketFx = createEffect((id: number) => basketApi.removeFromBasket(id))
+
+export const test = createEffect(() => () => {
+  console.log(['111111111111'])
+  return true
+})
 
 // --- Stores ---
 
@@ -29,6 +35,6 @@ export const $basketLoading = createStore(false)
   .on(fetchBasketFx.finally, () => false)
 
 // После добавления/обновления/удаления — перезагружаем корзину
-sample({ clock: addToBasketFx.done, target: fetchBasketFx })
+sample({ clock: addToBasketFx.done, target: [fetchBasketFx, test] })
 sample({ clock: updateBasketItemFx.done, target: fetchBasketFx })
 sample({ clock: removeFromBasketFx.done, target: fetchBasketFx })

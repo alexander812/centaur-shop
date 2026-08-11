@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useUnit } from 'effector-react'
 import { AppShell, Group, Button, Text, Container } from '@mantine/core'
 import { $user, logoutFx } from '../features/auth/store'
-
+import { Snakbar } from '../layouts/snakbar/ui'
 export function MainLayout({ children }: { children: ReactNode }) {
   const user = useUnit($user)
   const navigate = useNavigate()
@@ -59,6 +59,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       </AppShell.Header>
 
       <AppShell.Main>
+        <Snakbar />
         <Container size="xl" py="md">
           {children}
         </Container>

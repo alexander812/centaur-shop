@@ -1,10 +1,10 @@
-import { customEndpoint, readItems, createItem, updateItem, deleteItem } from '@directus/sdk'
+import { customEndpoint, readItems, updateItem, deleteItem } from '@directus/sdk'
 import client from '../lib/directus'
 import type { BasketItem } from '../lib/types'
 
 interface AddBasketResponse {
   status: 'ok' | 'fail'
-  data?: { id: number; good_id: number; quantity: number }
+  payload?: { id: number; good_id: number; quantity: number }
   error?: string
 }
 
@@ -19,31 +19,31 @@ export async function fetchBasket(): Promise<BasketItem[]> {
   return data as unknown as BasketItem[]
 }
 
-export async function addToBasket(goodId: number, quantity = 1): Promise<BasketItem> {
-  // Проверяем, есть ли уже этот товар в корзине
-  const existing = (await client.request(
-    readItems('basket', {
-      fields: ['id', 'quantity'] as never[],
-      filter: { good_id: { _eq: goodId } } as never,
-      limit: 1,
-    })
-  )) as unknown as BasketItem[]
+// export async function addToBasket(goodId: number, quantity = 1): Promise<BasketItem> {
+//   // Проверяем, есть ли уже этот товар в корзине
+//   const existing = (await client.request(
+//     readItems('basket', {
+//       fields: ['id', 'quantity'] as never[],
+//       filter: { good_id: { _eq: goodId } } as never,
+//       limit: 1,
+//     })
+//   )) as unknown as BasketItem[]
+//
+//   if (existing.length > 0) {
+//     // Увеличиваем quantity
+//     const item = existing[0]
+//     return updateBasketItem(item.id, item.quantity + quantity)
+//   }
 
-  if (existing.length > 0) {
-    // Увеличиваем quantity
-    const item = existing[0]
-    return updateBasketItem(item.id, item.quantity + quantity)
-  }
+// Создаём новую запись
+//   const item = await client.request(createItem('basket', { good_id: goodId, quantity } as never))
+//   return item as unknown as BasketItem
+// }
 
-  // Создаём новую запись
-  const item = await client.request(createItem('basket', { good_id: goodId, quantity } as never))
-  return item as unknown as BasketItem
-}
-
-export async function addToBasket2(goodId: number, quantity = 1): Promise<AddBasketResponse> {
+export async function addToBasket(goodId: number, quantity = 1): Promise<AddBasketResponse> {
   const response = await client.request(
     customEndpoint<AddBasketResponse>({
-      path: '/zeus/add',
+      path: '/zeus/add-to-basket',
       method: 'POST',
       body: JSON.stringify({ good_id: goodId, quantity }),
       headers: {
@@ -52,8 +52,7 @@ export async function addToBasket2(goodId: number, quantity = 1): Promise<AddBas
     })
   )
 
-  console.log(['addToBasket2', response])
-
+  console.log(['addToBasket response', response])
   return response
 }
 
