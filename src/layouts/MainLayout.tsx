@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+
 import { useUnit } from 'effector-react'
-import { AppShell, Group, Button, Text, Container } from '@mantine/core'
+import { AppShell, Group, Button, Text, Container, NavLink as MantineNavLink } from '@mantine/core'
 import { $user, logoutFx } from '../features/auth/store'
 import { Snakbar } from '../layouts/snakbar/ui'
 export function MainLayout({ children }: { children: ReactNode }) {
   const user = useUnit($user)
   const navigate = useNavigate()
-
-  console.log(['user', user])
 
   async function handleLogout() {
     await logoutFx()
@@ -28,15 +27,16 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <Text fw={700} size="lg">
                 Centaur
               </Text>
-              <Button component={NavLink} to="/" variant="subtle" size="sm">
-                Товары
-              </Button>
-              <Button component={NavLink} to="/basket" variant="subtle" size="sm">
-                Корзина
-              </Button>
-              <Button component={NavLink} to="/orders" variant="subtle" size="sm">
-                Заказы
-              </Button>
+
+              <NavLink to="/" end style={{ textDecoration: 'none' }}>
+                {({ isActive }) => <MantineNavLink label="Товары" active={isActive} />}
+              </NavLink>
+              <NavLink to="/basket" end style={{ textDecoration: 'none' }}>
+                {({ isActive }) => <MantineNavLink label="Корзина" active={isActive} />}
+              </NavLink>
+              <NavLink to="/orders" end style={{ textDecoration: 'none' }}>
+                {({ isActive }) => <MantineNavLink label="Заказы" active={isActive} />}
+              </NavLink>
             </Group>
             {user ? (
               <Group>

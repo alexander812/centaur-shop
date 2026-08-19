@@ -1,6 +1,6 @@
-import { createStore } from 'effector'
-import { addToBasketFx } from '../../../features/basket/store'
+import { createStore, createEvent, sample } from 'effector'
 import { logoutFx } from '../../../features/auth/store'
+import { debounce } from '../../../lib/utils'
 
 type Snakbar =
   | {
@@ -13,12 +13,21 @@ type Snakbar =
     }
 
 // --- Stores ---
-export const $snakbar = createStore<Snakbar | null>(null)
-  .on(addToBasketFx.doneData, (_, data) => {
-    console.log(['$snakbar', _, data])
+export const $snakbar = createStore<Snakbar | null>(null).reset(logoutFx.done)
+export const clearMessage = createEvent()
 
-    return data.status === 'ok'
-      ? { status: data.status, message: 'Товар добавлен в корзину' }
-      : { status: data.status, message: data.error ?? 'Ошибка добавления товара' }
-  })
-  .reset(logoutFx.done)
+sample({
+  clock: clearMessage,
+  fn: () => null,
+  target: $snakbar,
+})
+
+const debouncedClear = debounce(() => {
+  clearMessage()
+}, 3000)
+
+$snakbar.watch((value) => {
+  if (value !== null) {
+    debouncedClear()
+  }
+})

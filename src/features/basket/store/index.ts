@@ -3,6 +3,7 @@ import * as basketApi from '../../../transport/basket'
 import type { BasketItem } from '../../../lib/types'
 import { logoutFx } from '../../auth/store'
 import { createOrderFx } from '../../order/store'
+import { $snakbar } from '../../../layouts/snakbar/store'
 
 // --- Effects ---
 
@@ -40,3 +41,12 @@ sample({ clock: addToBasketFx.done, target: [fetchBasketFx, test] })
 sample({ clock: updateBasketItemFx.done, target: fetchBasketFx })
 sample({ clock: removeFromBasketFx.done, target: fetchBasketFx })
 sample({ clock: createOrderFx.done, target: fetchBasketFx })
+
+sample({
+  clock: addToBasketFx.doneData,
+  fn: (data) =>
+    data.status === 'ok'
+      ? { status: data.status, message: 'Товар добавлен в корзину' }
+      : { status: data.status, message: data.error ?? 'Ошибка добавления товара' },
+  target: $snakbar,
+})
