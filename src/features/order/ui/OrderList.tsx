@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useUnit } from 'effector-react'
-import { Stack, Card, Text, Badge, Group } from '@mantine/core'
-import { $orders, $ordersLoading, fetchOrdersFx } from '../store'
+import { Stack, Card, Text, Badge, Group, Button } from '@mantine/core'
+import { $orders, $ordersLoading, fetchOrdersFx, removeOrderFx } from '../store'
 
 const STATUS_LABELS: Record<string, string> = {
   new: 'Новый',
@@ -33,6 +33,9 @@ export function OrderList() {
           <Group justify="space-between">
             <Text fw={500}>Заказ #{order.id}</Text>
             <Badge>{STATUS_LABELS[order.status] ?? order.status}</Badge>
+            <Button variant="subtle" color="red" size="sm" onClick={() => removeOrderFx(order.id)}>
+              Удалить
+            </Button>
           </Group>
           {order.date_created && (
             <Text size="sm" c="dimmed" mt="xs">

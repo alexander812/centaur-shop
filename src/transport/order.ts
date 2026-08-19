@@ -1,4 +1,4 @@
-import { readItems, customEndpoint } from '@directus/sdk'
+import { readItems, customEndpoint, deleteItem } from '@directus/sdk'
 import client from '../lib/directus'
 import type { Order, Response } from '../lib/types'
 
@@ -29,4 +29,8 @@ export async function createOrder(basketId: number): Promise<CreateOrderResponse
 
   console.log(['createOrder response', response])
   return response
+}
+
+export async function removeOrder(id: number): Promise<void> {
+  await client.request(deleteItem('order', id))
 }

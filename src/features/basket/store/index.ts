@@ -2,6 +2,7 @@ import { createStore, createEffect, sample } from 'effector'
 import * as basketApi from '../../../transport/basket'
 import type { BasketItem } from '../../../lib/types'
 import { logoutFx } from '../../auth/store'
+import { createOrderFx } from '../../order/store'
 
 // --- Effects ---
 
@@ -38,3 +39,4 @@ export const $basketLoading = createStore(false)
 sample({ clock: addToBasketFx.done, target: [fetchBasketFx, test] })
 sample({ clock: updateBasketItemFx.done, target: fetchBasketFx })
 sample({ clock: removeFromBasketFx.done, target: fetchBasketFx })
+sample({ clock: createOrderFx.done, target: fetchBasketFx })
