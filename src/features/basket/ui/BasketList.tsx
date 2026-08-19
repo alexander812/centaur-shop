@@ -9,6 +9,8 @@ import {
   removeFromBasketFx,
 } from '../store'
 
+import { createOrderFx } from '../../order/store'
+
 export function BasketList() {
   const basket = useUnit($basket)
   const loading = useUnit($basketLoading)
@@ -73,10 +75,13 @@ export function BasketList() {
 
       <Button
         variant="subtle"
-        color="red"
+        color="blue"
         size="sm"
         onClick={() => {
-          //
+          const item = basket.at(0)
+          if (item) {
+            createOrderFx({ basket_id: item.id })
+          }
         }}
       >
         Оформить заказ

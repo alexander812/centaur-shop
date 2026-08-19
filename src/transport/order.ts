@@ -1,6 +1,8 @@
-import { readItems, createItem } from '@directus/sdk'
+import { readItems, customEndpoint } from '@directus/sdk'
 import client from '../lib/directus'
-import type { Order } from '../lib/types'
+import type { Order, Response } from '../lib/types'
+
+type CreateOrderResponse = Response<{ id: number; basket_id: number }>
 
 export type { Order }
 
@@ -13,7 +15,18 @@ export async function fetchOrders(): Promise<Order[]> {
   return data as unknown as Order[]
 }
 
-export async function createOrder(): Promise<Order> {
-  const item = await client.request(createItem('order' as 'goods', { status: 'new' } as never))
-  return item as unknown as Order
+export async function createOrder(basketId: number): Promise<CreateOrderResponse> {
+  const response = await client.request(
+    customEndpoint<CreateOrderResponse>({
+      path: '/zeus/create-order',
+      method: 'POST',
+      body: JSON.stringify({ basket_id: basketId }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  )
+
+  console.log(['createOrder response', response])
+  return response
 }

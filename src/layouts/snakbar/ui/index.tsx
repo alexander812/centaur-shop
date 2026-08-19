@@ -13,7 +13,5 @@ export function Snakbar() {
       color={snakbar.status === 'fail' ? 'red' : 'green'}
       title={snakbar.message}
     ></Alert>
-  ) : (
-    <div>!!!!!</div>
-  )
+  ) : null
 }

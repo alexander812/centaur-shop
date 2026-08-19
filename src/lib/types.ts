@@ -7,6 +7,7 @@ export interface BasketItem {
   good_id: number | Good
   quantity: number
   user_created?: string
+  order_id?: number | null
 }
 
 export interface Order {
@@ -20,4 +21,10 @@ export interface Schema {
   goods: Good[]
   basket: BasketItem[]
   order: Order[]
+}
+
+export interface Response<Payload> {
+  status: 'ok' | 'fail'
+  payload?: Payload
+  error?: string
 }

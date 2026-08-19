@@ -1,12 +1,8 @@
 import { customEndpoint, readItems, updateItem, deleteItem } from '@directus/sdk'
 import client from '../lib/directus'
-import type { BasketItem } from '../lib/types'
+import type { BasketItem, Response } from '../lib/types'
 
-interface AddBasketResponse {
-  status: 'ok' | 'fail'
-  payload?: { id: number; good_id: number; quantity: number }
-  error?: string
-}
+type AddBasketResponse = Response<{ id: number; good_id: number; quantity: number }>
 
 export type { BasketItem }
 
@@ -14,6 +10,11 @@ export async function fetchBasket(): Promise<BasketItem[]> {
   const data = await client.request(
     readItems('basket', {
       fields: ['id', 'good_id.*', 'quantity'] as never[],
+      filter: {
+        order_id: {
+          _null: true,
+        },
+      },
     })
   )
   return data as unknown as BasketItem[]

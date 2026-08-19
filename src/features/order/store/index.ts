@@ -7,7 +7,9 @@ import { logoutFx } from '../../auth/store'
 
 export const fetchOrdersFx = createEffect(() => orderApi.fetchOrders())
 
-export const createOrderFx = createEffect(() => orderApi.createOrder())
+export const createOrderFx = createEffect(({ basket_id }: { basket_id: number }) =>
+  orderApi.createOrder(basket_id)
+)
 
 // --- Stores ---
 
